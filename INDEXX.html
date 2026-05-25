@@ -1,0 +1,79 @@
+<html>
+<head>
+  <title>Multiple Google Map Markers</title>
+
+  <style>
+    #map {
+      height: 100px;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="map"></div>
+
+<script>
+  function initMap() {
+
+    // Center point of map
+    const center = { lat: -30.5595, lng: 22.9375 };
+
+    // Create map
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 5,
+      center: center
+    });
+
+    // List of locations
+   // READ URL PARAMETERS
+const params = new URLSearchParams(window.location.search);
+
+// LOOP THROUGH MULTIPLE LOCATIONS
+for (let i = 1; i <= 10; i++) {
+
+  const locationData = params.get(`loc${i}`);
+
+  if (locationData) {
+
+    const parts = locationData.split(",");
+
+    const lat = parseFloat(parts[0]);
+
+    const lng = parseFloat(parts[1]);
+
+    const title = parts[2] || "Dynamic Location";
+
+    // CREATE MARKER
+    L.marker([lat, lng])
+
+      .addTo(map)
+
+      .bindPopup(title);
+
+  }
+
+};
+  }
+  const routeCoordinates = [
+  { lat: -26.035358670360978, lng: 27.83995775627798 },
+  { lat: -25.83158317233316, lng: 28.11942247177238 },
+  { lat: -26.091329849307936, lng: 27.955879787540304 }
+];
+const routePath = new google.maps.Polyline({
+  path: routeCoordinates,
+  geodesic: true,
+  strokeColor: "#FF0000",
+  strokeOpacity: 1.0,
+  strokeWeight: 3
+});
+routePath.setMap(map);
+</script>
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGD8NtA-SJsx1c-ZCuIxxBvRQCGKCl3YY&callback=initMap">
+</script>
+
+</body>
+</html>
